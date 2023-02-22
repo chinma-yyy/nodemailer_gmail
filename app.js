@@ -5,18 +5,18 @@ const OAuth2 = google.auth.OAuth2;
 
 const config = require("./config");
 
-const send_mail = async (name, receipient) => {
-  const OAuth2_client = new OAuth2(config.clientID, config.clientSecret);
-  console.log(OAuth2_client);
-  console.log(config.refreshToken);
-  OAuth2_client.setCredentials({
-    refresh_token: config.refreshToken,
-  });
+const send_mail = async (text, receipient) => {
+  // const OAuth2_client = new OAuth2(config.clientID, config.clientSecret);
+  // console.log(OAuth2_client);
+  // console.log(config.refreshToken);
+  // OAuth2_client.setCredentials({
+  //   refresh_token: config.refreshToken,
+  // })
   console.log("done idhar tak");
-  const access_token = await OAuth2_client.getAccessToken();
-  console.log(access_token.token);
+  // const access_token = await OAuth2_client.getAccessToken();
+  // console.log(access_token.token);
 
-  console.log("error");
+  // console.log("error");
   const transport = await nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -25,7 +25,7 @@ const send_mail = async (name, receipient) => {
       clientId: config.clientID,
       clientSecret: config.clientSecret,
       refreshToken: config.refreshToken,
-      accessToken: access_token,
+      accessToken: config.accessToken,
     },
   });
 //   console.log(transport);
@@ -33,9 +33,9 @@ const send_mail = async (name, receipient) => {
     from: config.user,
     to: receipient,
     subject: "Testing email",
-    text: `Hi ${name}, this is a test email from Node.js`,
+    text: text
   };
-  // console.log("check");
+  console.log("check");
   await transport.sendMail(mail_options, (err, data) => {
     if (err) {
       console.log("Send err :"+err);
@@ -47,4 +47,4 @@ const send_mail = async (name, receipient) => {
   });
 };
 
-send_mail("Chinmay", "shewalechinmay23@gmail.com");
+send_mail("Greetings Everyone,\n\n\tLets see this message if  ", "shewalechinmay23@gmail.com");
