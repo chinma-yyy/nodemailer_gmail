@@ -17,7 +17,7 @@ const send_mail = async (text, receipient) => {
   // console.log(access_token.token);
 
   // console.log("error");
-  const transport = await nodemailer.createTransport({
+  const transport = nodemailer.createTransport({
     service: "gmail",
     auth: {
       type: "OAuth2",
@@ -28,7 +28,6 @@ const send_mail = async (text, receipient) => {
       accessToken: config.accessToken,
     },
   });
-//   console.log(transport);
   const mail_options = {
     from: config.user,
     to: receipient,
@@ -36,7 +35,7 @@ const send_mail = async (text, receipient) => {
     text: text
   };
   console.log("check");
-  await transport.sendMail(mail_options, (err, data) => {
+  transport.sendMail(mail_options, (err, data) => {
     if (err) {
       console.log("Send err :"+err);
       console.log(data);
